@@ -4,8 +4,7 @@ Page({
   data: {
 
   },
-  onLoad: function(options){
-    // 页面初始化options为页面跳转所带来的参数
+  onLoad: function(){
     this.setData({
       posts_key: postsData.postList
     });
@@ -15,7 +14,7 @@ Page({
   onPostTap:function(event){
     var postId = event.currentTarget.dataset.postid;
     wx.navigateTo({
-      url: "post-detail/post-detail"
+      url: "post-detail/post-detail?id=" + postId
     })
   }
 })
