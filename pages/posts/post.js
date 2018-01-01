@@ -11,5 +11,11 @@ Page({
     });
     // 
     // this.data.posts_key = postsData.postList
+  },
+  onPostTap:function(event){
+    var postId = event.currentTarget.dataset.postid;
+    wx.navigateTo({
+      url: "post-detail/post-detail"
+    })
   }
 })

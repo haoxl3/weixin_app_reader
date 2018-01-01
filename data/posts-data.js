@@ -6,7 +6,8 @@ var local_database = [
     content: "文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容",
     reading: "112",
     collection: "96",
-    avatar: "/images/avatar/1.png"
+    avatar: "/images/avatar/1.png",
+    postId: 0
   },
   {
     date: "Sep 18 2016",
@@ -15,7 +16,8 @@ var local_database = [
     content: "文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容文本内容",
     reading: "112",
     collection: "96",
-    avatar: "/images/avatar/1.png"
+    avatar: "/images/avatar/1.png",
+    postId: 1
   }
 ]
 
