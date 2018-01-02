@@ -15,9 +15,26 @@ Page({
   onLoad: function (options) {
     var postId = options.id;
     var postData = postsData.postList[postId];
+    this.data.currentPostId = postId;//做中间变量，下面的方法将用到postId
     this.setData({
       postData: postData
     })
+    // wx.setStorageSync('key','aa')
+    // wx.setStorageSync('key', {
+    //   game: 'bbb',
+    //   developer: 'ccc'
+    // })
+    var postsCollected = wx.getStorageSync('posts_collected')
+    if (postsCollected){
+      var postsCollected = postsCollected[postId]
+      this.setData({
+        collected: postsCollected
+      }) 
+    }else{
+      var postsCollected = {}
+      postsCollected[postId] = false
+      wx.setStorageSync('posts_collected', postsCollected)
+    }
   },
 
   /**
@@ -67,5 +84,16 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  onCollectionTap: function(event){
+    var postsCollected = wx.getStorageSync('posts_collected')
+    var postCollected = postsCollected[this.data.currentPostId];
+    postCollected = !postCollected
+    postsCollected[this.data.currentPostId] = postCollected;
+    wx.setStorageSync('posts_collected', postsCollected)
+    //更新数据绑定变量，从而实现切换图片
+    this.setData({
+      collected: postCollected
+    })
   }
 })
