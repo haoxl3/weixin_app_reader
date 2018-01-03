@@ -1,12 +1,13 @@
 // pages/post/post-detail/post-detal.js
 var postsData = require('../../../data/posts-data.js')
+var app = getApp();//app.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    isPlayingMusic: false
   },
 
   /**
@@ -24,6 +25,7 @@ Page({
     //   game: 'bbb',
     //   developer: 'ccc'
     // })
+    //设置本地localstorage存储收藏状态
     var postsCollected = wx.getStorageSync('posts_collected')
     if (postsCollected){
       var postsCollected = postsCollected[postId]
@@ -35,6 +37,18 @@ Page({
       postsCollected[postId] = false
       wx.setStorageSync('posts_collected', postsCollected)
     }
+    //全局监听音乐播放
+    var that = this;
+    wx.onBackgroundAudioPlay(function(){
+      that.setData({
+        isPlayingMusic: true 
+      })
+    })
+    wx.onBackgroundAudioPause(function(){
+      that.setData({
+        isPlayingMusic: false 
+      })
+    })
   },
 
   /**
@@ -85,12 +99,32 @@ Page({
   onShareAppMessage: function () {
 
   },
-  onCollectionTap: function(event){
-    var postsCollected = wx.getStorageSync('posts_collected')
+  //异步方法
+  getPostsCollectedAsy: function(){
+    var that = this;
+    //异步与同步方法名区别是是否加sync
+    wx.getStorage({
+      key: "posts_collected",
+      success: function(res){
+        var postsCollected = res.data;
+        var postCollected = postsCollected[that.data.currentPostId];
+        postCollected = !postCollected
+        postsCollected[that.data.currentPostId] = postCollected;
+        that.showToast(postsCollected, postCollected)
+      }
+    })
+  },
+  //同步
+  getPostsCollectedSyc: function(){
+    var postsCollected = wx.getStorageSync('posts_collected');
     var postCollected = postsCollected[this.data.currentPostId];
     postCollected = !postCollected
     postsCollected[this.data.currentPostId] = postCollected;
     this.showToast(postsCollected, postCollected)
+  },
+  onCollectionTap: function(event){
+    this.getPostsCollectedSyc();
+    // this.getPostsCollectedAsy();
   },
   showToast: function(postsCollected, postCollected){
     wx.setStorageSync('posts_collected', postsCollected)
@@ -116,5 +150,26 @@ Page({
         })
       }
     })
+  },
+  //音乐的播放与暂停
+  onMusicTap: function(event){
+    var currentPostId = this.data.currentPostId;
+    var postData = postsData.postList[currentPostId];
+    var isPlayingMusic = this.data.isPlayingMusic;
+    if (isPlayingMusic){
+      wx.pauseBackgroundAudio();
+      this.setData({
+        isPlayingMusic: false
+      })
+    }else{
+      wx.playBackgroundAudio({
+        dataUrl: postData.music.url,
+        title: postData.title,
+        coverImgUrl: postData.coverImg
+      })
+      this.setData({
+        isPlayingMusic: true
+      })
+    }
   }
 })

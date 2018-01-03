@@ -1,4 +1,4 @@
-//app.js
+//应用程序生命周期的相关方法配置 app.js
 App({
   onLaunch: function () {
     // 展示本地存储能力
@@ -35,5 +35,9 @@ App({
   },
   globalData: {
     userInfo: null
+  },
+  //全局变量
+  globalData: {
+    g_isPlayingMusic: false 
   }
 })
