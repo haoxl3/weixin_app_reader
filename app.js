@@ -38,6 +38,9 @@ App({
   },
   //全局变量
   globalData: {
-    g_isPlayingMusic: false 
+    //音乐是否正在被播放
+    g_isPlayingMusic: false,
+    //哪一个音乐正在被播放
+    g_currentMusicPostId: null
   }
 })

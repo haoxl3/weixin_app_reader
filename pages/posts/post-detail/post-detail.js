@@ -1,6 +1,7 @@
 // pages/post/post-detail/post-detal.js
 var postsData = require('../../../data/posts-data.js')
 var app = getApp();//app.js
+
 Page({
 
   /**
@@ -37,17 +38,30 @@ Page({
       postsCollected[postId] = false
       wx.setStorageSync('posts_collected', postsCollected)
     }
+    if (app.globalData.g_isPlayingMusic && app.globalData.g_currentMusicPostId === postId){
+      this.setData({
+        isPlayingMusic: true
+      })
+    }
+    this.setMusicMonitor();
+  },
+  setMusicMonitor: function(){
     //全局监听音乐播放
     var that = this;
-    wx.onBackgroundAudioPlay(function(){
+    wx.onBackgroundAudioPlay(function () {
       that.setData({
-        isPlayingMusic: true 
-      })
+        isPlayingMusic: true
+      })   
+      // 设置全局变量（控制音乐播放）为真
+      app.globalData.g_isPlayingMusic = true;
+      app.globalData.g_currentMusicPostId = that.data.currentPostId;
     })
-    wx.onBackgroundAudioPause(function(){
+    wx.onBackgroundAudioPause(function () {
       that.setData({
-        isPlayingMusic: false 
+        isPlayingMusic: false
       })
+      app.globalData.g_isPlayingMusic = false;
+      app.globalData.g_currentMusicPostId = null;
     })
   },
 
