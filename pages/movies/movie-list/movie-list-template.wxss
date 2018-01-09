@@ -10,25 +10,29 @@
   margin: 0 auto 20rpx;
 }
 .movie-head{
-  padding: 30rxp 20rpx 22rpx;
-  display: flex;
+  padding: 20rpx;
+  /*display:flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  justify-content:space-between;*/ 
 }
-.slogan{
+.slogan {
   font-size: 24rpx;
 }
-/* .more{
-   float: right; 
-} */
-.more-text{
-  margin-right: 10rpx;
+
+.more {
+  float: right;
+}
+
+.more-text {
+  vertical-align: middle;
+  margin-right: 10rpx; 
   color: #1f4ba5;
 }
-.more-img{
+
+.more-img {
   width: 9rpx;
   height: 16rpx;
+  vertical-align: middle;
 }
 .movies-container{
   display: flex;

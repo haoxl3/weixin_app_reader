@@ -1,14 +1,20 @@
 var app = getApp();//默认取app.js
+var util = require('../../utils/util.js')
 Page({
+  data: {
+    inTheatersUrl:{},
+    comingSoonUrl: {},
+    top250Url: {}
+  },
   onLoad: function(event){
     var inTheatersUrl = app.globalData.doubanBase +"/v2/movie/in_theaters";
     var comingSoonUrl = app.globalData.doubanBase +"/v2/movie/coming_soon";
     var top250Url = app.globalData.doubanBase +"/v2/movie/top250";
-    this.getMovieListData(inTheatersUrl);
-    this.getMovieListData(comingSoonUrl);
-    this.getMovieListData(top250Url);
+    this.getMovieListData(inTheatersUrl,'inTheatersUrl',"正在热映");
+    this.getMovieListData(comingSoonUrl,'comingSoonUrl',"即将上映");
+    this.getMovieListData(top250Url,'top250Url',"豆瓣top250");
   },
-  getMovieListData: function(url){
+  getMovieListData: function (url, settedKey, catetoryTitle){
     var that = this;
     wx.request({
       url: url,
@@ -18,7 +24,7 @@ Page({
         "Content-Type": "application/xml"//此处为不豆瓣的bug，正常应为application/json
       },
       success: function (res) {
-        that.processDoubanData(res.data)
+        that.processDoubanData(res.data, settedKey, catetoryTitle)
       },
       fail: function (error) {
         console.log(error)
@@ -28,7 +34,7 @@ Page({
       }
     })
   },
-  processDoubanData: function(moviesDouban){
+  processDoubanData: function (moviesDouban, settedKey, catetoryTitle){
     var movies = [];
     for(var idx in moviesDouban.subjects){
       var subject = moviesDouban.subjects[idx];
@@ -37,6 +43,7 @@ Page({
         title = title.substring(0,6) + "...";
       }
       var temp = {
+        stars: util.convertToStarsArray(subject.rating.stars),
         title: title,
         average: subject.rating.average,
         coverageUrl: subject.images.large,
@@ -44,8 +51,11 @@ Page({
       }
       movies.push(temp)
     }
-    this.setData({
+    var readyData = {};
+    readyData[settedKey] = { 
+      catetoryTitle:catetoryTitle,
       movies: movies
-    })
+    };
+    this.setData(readyData);
   }
 })
