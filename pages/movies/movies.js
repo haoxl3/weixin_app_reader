@@ -9,6 +9,7 @@ Page({
     this.getMovieListData(top250Url);
   },
   getMovieListData: function(url){
+    var that = this;
     wx.request({
       url: url,
       data: {},
@@ -17,7 +18,7 @@ Page({
         "Content-Type": "application/xml"//此处为不豆瓣的bug，正常应为application/json
       },
       success: function (res) {
-        console.log(res)
+        that.processDoubanData(res.data)
       },
       fail: function (error) {
         console.log(error)
@@ -25,6 +26,26 @@ Page({
       complete: function () {
 
       }
+    })
+  },
+  processDoubanData: function(moviesDouban){
+    var movies = [];
+    for(var idx in moviesDouban.subjects){
+      var subject = moviesDouban.subjects[idx];
+      var title = subject.title;
+      if(title.length >= 6){
+        title = title.substring(0,6) + "...";
+      }
+      var temp = {
+        title: title,
+        average: subject.rating.average,
+        coverageUrl: subject.images.large,
+        movieId: subject.id
+      }
+      movies.push(temp)
+    }
+    this.setData({
+      movies: movies
     })
   }
 })
