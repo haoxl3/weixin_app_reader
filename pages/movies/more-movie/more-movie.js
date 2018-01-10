@@ -67,6 +67,8 @@ Page({
     })
     //数据绑定后累加一下总共的获得的电影个数
     this.data.totalCount += 20;
+    //loading hide
+    wx.hideNavigationBarLoading()
   },
 
   /**
@@ -126,6 +128,8 @@ Page({
   onScrollLower: function(event){
     //将requestUrl挂载到data上，然后便可以其他周期中使用
     let nextUrl = this.data.requestUrl + "?start=" + this.data.totalCount + "&count=20";
+    //loading
+    wx.showNavigationBarLoading()
     util.http(nextUrl, this.processDoubanData)
   }
 })
