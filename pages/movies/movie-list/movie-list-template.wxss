@@ -6,27 +6,30 @@
   flex-direction: column;
   margin-bottom: 30rpx;
 }
-.inner-container{
-  margin: 0 auto 20rpx;
-}
 .movie-head{
   padding: 20rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   /*display:flex;
   flex-direction: row;
   justify-content:space-between;*/ 
 }
 .slogan {
   font-size: 24rpx;
+  flex: 1; 
 }
 
 .more {
-  float: right;
+  flex: 1;
+  text-align: right;
 }
 
 .more-text {
   vertical-align: middle;
   margin-right: 10rpx; 
   color: #1f4ba5;
+  text-align: right;
 }
 
 .more-img {
