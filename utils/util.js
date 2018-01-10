@@ -28,9 +28,28 @@ function convertToStarsArray(stars) {
   return array;
 }
 
+//ajax请求
+function http(url,callBack){
+  console.log(url)
+  wx.request({
+    url: url,
+    method: 'GET',
+    header: {
+      "Content-Type": "json"
+    },
+    success: function(res){
+      callBack(res.data)
+    },
+    fail: function(error){
+      console.log(error)
+    }
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
-  convertToStarsArray: convertToStarsArray
+  convertToStarsArray: convertToStarsArray,
+  http: http
 }
 
 
