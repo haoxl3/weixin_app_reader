@@ -8,7 +8,10 @@ Page({
    */
   data: {
     navigateTitle: "",
-    movies: {}
+    movies: {},
+    requestUrl: '',
+    totalCount: 0,
+    isEmpty: true
   },
 
   /**
@@ -29,7 +32,7 @@ Page({
         dataUrl = app.globalData.doubanBase + "/v2/movie/top250"
         break;
     }
-    console.log(dataUrl)
+    this.data.requestUrl = dataUrl
     util.http(dataUrl, this.processDoubanData)
   },
   processDoubanData: function (moviesDouban){
@@ -51,9 +54,19 @@ Page({
       }
       movies.push(temp)
     }
+    //将新获取的20条电影要与之前的合并一块绑定,先判断一下是否是第一次，如果不是再合并数据，如果是第一次则直接显示数据
+    var totalMovies = {}
+    if(!this.data.isEmpty){
+      totalMovies = this.data.movies.concat(movies)
+    }else{
+      totalMovies = movies;
+      this.data.isEmpty = false;
+    }
     this.setData({
-      movies: movies
+      movies: totalMovies
     })
+    //数据绑定后累加一下总共的获得的电影个数
+    this.data.totalCount += 20;
   },
 
   /**
@@ -108,5 +121,11 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  //向下刷新
+  onScrollLower: function(event){
+    //将requestUrl挂载到data上，然后便可以其他周期中使用
+    let nextUrl = this.data.requestUrl + "?start=" + this.data.totalCount + "&count=20";
+    util.http(nextUrl, this.processDoubanData)
   }
 })

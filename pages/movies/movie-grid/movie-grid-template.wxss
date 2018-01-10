@@ -4,5 +4,6 @@
   margin-bottom: 40rpx;
 }
 .grid-container{
+  height: 1300rpx; /* iphone6高度减去顶部导航栏 */
   margin: 40rpx 0 40rpx 6rpx;
 }
