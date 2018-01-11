@@ -69,6 +69,8 @@ Page({
     this.data.totalCount += 20;
     //loading hide
     wx.hideNavigationBarLoading()
+    //下拉刷新停止
+    wx.stopPullDownRefresh()
   },
 
   /**
@@ -124,12 +126,21 @@ Page({
   onShareAppMessage: function () {
   
   },
-  //向下刷新
+  //向下
   onScrollLower: function(event){
     //将requestUrl挂载到data上，然后便可以其他周期中使用
     let nextUrl = this.data.requestUrl + "?start=" + this.data.totalCount + "&count=20";
     //loading
     wx.showNavigationBarLoading()
     util.http(nextUrl, this.processDoubanData)
+  },
+  //下拉刷新
+  onPullDownRefresh: function(event){
+    var refreshUrl = this.data.requestUrl + "?star=0&count=20";
+    //下拉时将movies至空
+    this.data.movies = {};
+    this.data.isEmpty = true;
+    util.http(refreshUrl, this.processDoubanData);
+    wx.showNavigationBarLoading()
   }
 })
