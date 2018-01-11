@@ -4,7 +4,9 @@ Page({
   data: {
     inTheatersUrl:{},
     comingSoonUrl: {},
-    top250Url: {}
+    top250Url: {},
+    containerShow: true,
+    searchPannelShow: false
   },
   onLoad: function(event){
     var inTheatersUrl = app.globalData.doubanBase +"/v2/movie/in_theaters";
@@ -63,6 +65,21 @@ Page({
     let category = event.currentTarget.dataset.category
     wx.navigateTo({
       url: "more-movie/more-movie?category=" + category
+    })
+  },
+  //搜索框获取焦点时
+  onBindFocus:function(event){
+    this.setData({
+      containerShow: false,
+      searchPannelShow: true
+    })
+  },
+  //点击搜索框上的删除按钮
+  onCancelImgTap: function(event){
+    this.setData({
+      containerShow: true,
+      searchPannelShow: false,
+      searchResult: {}
     })
   }
 })
