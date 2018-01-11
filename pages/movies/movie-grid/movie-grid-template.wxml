@@ -1,7 +1,6 @@
 <import src="../movie/movie-template.wxml"/>
 <template name="movieGridTemplate">
   <scroll-view scroll-y="true" scroll-x="false" bindscrolltolower="onScrollLower" class="grid-container">
-  <text>asdfasdf</text>
     <block wx:for="{{movies}}" wx:for-item="movie">
       <view class="single-view-container">
         <template is="movieTemplate" data="{{...movie}}"/>

@@ -5,6 +5,7 @@ Page({
     inTheatersUrl:{},
     comingSoonUrl: {},
     top250Url: {},
+    searchResult: {},
     containerShow: true,
     searchPannelShow: false
   },
@@ -73,6 +74,12 @@ Page({
       containerShow: false,
       searchPannelShow: true
     })
+  },
+  //搜索框内容改变时发送请求,也可以用bindblur事件
+  onBindConfirm: function(event){
+    var text = event.detail.value;//获取文本框值
+    var searchUrl = app.globalData.doubanBase + "/v2/movie/search?q=" + text;
+    this.getMovieListData(searchUrl, "searchResult","");
   },
   //点击搜索框上的删除按钮
   onCancelImgTap: function(event){
