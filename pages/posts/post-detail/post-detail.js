@@ -63,6 +63,14 @@ Page({
       app.globalData.g_isPlayingMusic = false;
       app.globalData.g_currentMusicPostId = null;
     })
+    //监听音乐停止
+    wx.onBackgroundAudioStop(function () {
+      that.setData({
+        isPlayingMusic: false
+      })
+      app.globalData.g_isPlayingMusic = false;
+      app.globalData.g_currentMusicPostId = null;
+    })
   },
 
   /**
