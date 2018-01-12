@@ -68,6 +68,13 @@ Page({
       url: "more-movie/more-movie?category=" + category
     })
   },
+  //跳到电影详情页
+  onMovieTap: function(event){
+    let movieId = event.currentTarget.dataset.movieid
+    wx.navigateTo({
+      url: "movie-detail/movie-detail?id=" + movieId
+    })
+  },
   //搜索框获取焦点时
   onBindFocus:function(event){
     this.setData({
