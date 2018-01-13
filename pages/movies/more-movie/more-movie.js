@@ -109,8 +109,14 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-  
+  onPullDownRefresh: function (event) {
+    var refreshUrl = this.data.requestUrl + "?star=0&count=20";
+    //下拉时将movies至空
+    this.data.movies = {};
+    this.data.isEmpty = true;
+    this.data.totalCount = 0;
+    util.http(refreshUrl, this.processDoubanData);
+    wx.showNavigationBarLoading()
   },
 
   /**
@@ -134,13 +140,10 @@ Page({
     wx.showNavigationBarLoading()
     util.http(nextUrl, this.processDoubanData)
   },
-  //下拉刷新
-  onPullDownRefresh: function(event){
-    var refreshUrl = this.data.requestUrl + "?star=0&count=20";
-    //下拉时将movies至空
-    this.data.movies = {};
-    this.data.isEmpty = true;
-    util.http(refreshUrl, this.processDoubanData);
-    wx.showNavigationBarLoading()
+  onMovieTap: function(event){
+    var movieId = event.currentTarget.dataset.movieid;
+    wx.navigateTo({
+      url: '../movie-detail/movie-detail?id='+movieId,
+    })
   }
 })
