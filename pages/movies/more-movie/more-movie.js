@@ -132,13 +132,20 @@ Page({
   onShareAppMessage: function () {
   
   },
-  //向下
-  onScrollLower: function(event){
-    //将requestUrl挂载到data上，然后便可以其他周期中使用
-    let nextUrl = this.data.requestUrl + "?start=" + this.data.totalCount + "&count=20";
-    //loading
-    wx.showNavigationBarLoading()
+  //向下,新版本导致scrollview与上拉加载更多冲突，所以换个方法，用mina在page的事件onReachBottom
+  // onScrollLower: function(event){
+  //   //将requestUrl挂载到data上，然后便可以其他周期中使用
+  //   let nextUrl = this.data.requestUrl + "?start=" + this.data.totalCount + "&count=20";
+  //   //loading
+  //   wx.showNavigationBarLoading()
+  //   util.http(nextUrl, this.processDoubanData)
+  // },
+  //上拉加载更多
+  onReachBottom: function (event) {
+    var nextUrl = this.data.requestUrl +
+      "?start=" + this.data.totalCount + "&count=20";
     util.http(nextUrl, this.processDoubanData)
+    wx.showNavigationBarLoading()
   },
   onMovieTap: function(event){
     var movieId = event.currentTarget.dataset.movieid;
